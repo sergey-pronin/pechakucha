@@ -1,0 +1,1322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PECHAKUCHA 15x15 // SERGEY // ET OFFSITE</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=VT323&display=swap">
+
+  <style>
+    :root {
+      /* surface */
+      --bg:        #0d0e15;
+      --panel:     #151823;
+      --line:      #1e2230;
+      --line-2:    #2b3142;
+      --dim:       #4a5066;
+
+      /* text */
+      --ink:       #e8e0d0;     /* warm cream */
+      --ink-soft:  #969ab0;     /* cool gray */
+
+      /* msfconsole / motd palette */
+      --red:       #ff5f5f;
+      --red-d:     #b04545;
+      --orange:    #ff955f;
+      --yellow:    #ffd75f;
+      --yellow-d:  #a88a2c;
+      --green:     #5fff87;
+      --green-d:   #2a9d4a;
+      --cyan:      #5fd7ff;
+      --cyan-d:    #2a8eb3;
+      --blue:      #87b5ff;
+      --magenta:   #ff87d7;
+      --magenta-d: #a85ca0;
+      --pink:      #ff87b3;
+
+      --mono:      'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    html, body { background: var(--bg); }
+
+    /* ───────────────── reveal overrides ───────────────── */
+    .reveal { font-family: var(--mono); color: var(--ink); font-size: 22px; }
+    .reveal .slides { text-align: left; }
+    .reveal .slides > section,
+    .reveal .slides > section > section { padding: 0 !important; }
+
+    /* progress bar from reveal hidden — we own the bottom strip */
+    .reveal .progress { display: none; }
+    .reveal .controls { color: var(--green) !important; opacity: 0.4; }
+
+    /* ───────────────── slide frame ───────────────── */
+    .frame {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background:
+        radial-gradient(ellipse at center, #181a26 0%, #0d0e15 70%);
+      padding: 28px 36px 24px 36px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    /* faint scanlines for CRT feel */
+    .frame::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.012) 0px,
+          rgba(255,255,255,0.012) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    /* faint vignette + noise */
+    .frame::after {
+      content: "";
+      position: absolute; inset: 0;
+      box-shadow: inset 0 0 200px rgba(0,0,0,0.8);
+      pointer-events: none;
+    }
+
+    /* ── HUD top bar (msfconsole-style) ── */
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      border-bottom: 1px dashed var(--line-2);
+      padding-bottom: 10px;
+      z-index: 2;
+    }
+    .hud .id { color: var(--red); font-weight: 700; }
+    .hud .title { color: var(--cyan); letter-spacing: 0.22em; }
+
+    /* ── body region ── */
+    .body {
+      display: grid;
+      gap: 60px;
+      align-items: center;
+      padding: 24px 16px;
+      z-index: 2;
+    }
+    /* minmax(0,…) prevents intrinsic content (wide <pre>) from
+       expanding a column past its fr share into the next column. */
+    .body.split   { grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr); }
+    .body.split-r { grid-template-columns: minmax(0, 1fr) minmax(0, 0.75fr); }
+    .body.stack   { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .body.center  { grid-template-columns: minmax(0, 1fr); text-align: center; justify-items: center; }
+
+    /* ── footer caption ── */
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      border-top: 1px dashed var(--line-2);
+      padding-top: 10px;
+      z-index: 2;
+    }
+    .foot .green { color: var(--orange); }
+
+    /* ───────────────── typography ───────────────── */
+    .reveal h1, .reveal h2, .reveal h3, .reveal p { margin: 0; color: var(--ink); }
+    .reveal h1 {
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: 64px;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+    .reveal h2 {
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: 44px;
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+    .reveal h3 {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--cyan);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .reveal p { font-family: var(--mono); font-size: 18px; line-height: 1.55; color: var(--ink); }
+    .reveal .dim { color: var(--ink-soft); }
+    .reveal .green { color: var(--cyan); }     /* repurposed: highlight = cyan */
+    .reveal .amber { color: var(--yellow); }
+    .reveal .yellow { color: var(--yellow); }
+    .reveal .red    { color: var(--red); }
+    .reveal .magenta { color: var(--magenta); }
+    .reveal .orange { color: var(--orange); }
+
+    /* big banner display */
+    .display {
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: 130px;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: var(--yellow);
+      text-shadow: 0 0 24px rgba(255,215,95,0.22);
+      text-transform: uppercase;
+    }
+    .display.sub { font-size: 60px; color: var(--cyan); text-shadow: 0 0 18px rgba(95,215,255,0.2); }
+
+    /* ── lists ── */
+    .reveal ul.list { list-style: none; padding: 0; margin: 14px 0 0 0; }
+    .reveal ul.list li {
+      font-family: var(--mono);
+      font-size: 18px;
+      color: var(--ink);
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--line);
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+    }
+    .reveal ul.list li::before {
+      content: ">";
+      color: var(--yellow);
+      font-weight: 700;
+    }
+    .reveal ul.list li:last-child { border-bottom: none; }
+
+    /* ── tag chips (rotating msf-style colors) ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .chip {
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 4px 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+    .chips .chip:nth-child(4n+1) { color: var(--cyan);    border-color: var(--cyan-d);    background: rgba(95,215,255,0.06); }
+    .chips .chip:nth-child(4n+2) { color: var(--yellow);  border-color: var(--yellow-d);  background: rgba(255,215,95,0.06); }
+    .chips .chip:nth-child(4n+3) { color: var(--magenta); border-color: var(--magenta-d); background: rgba(255,135,215,0.06); }
+    .chips .chip:nth-child(4n+4) { color: var(--green);   border-color: var(--green-d);   background: rgba(95,255,135,0.06); }
+
+    /* ── quote block ── */
+    .quote {
+      font-family: var(--mono);
+      font-size: 22px;
+      color: var(--ink);
+      line-height: 1.45;
+      padding: 12px 0 12px 20px;
+      border-left: 3px solid var(--yellow);
+      margin: 16px 0;
+    }
+    .quote::before { content: "// "; color: var(--cyan); }
+
+    /* ── terminal block ── */
+    .term {
+      font-family: var(--mono);
+      font-size: 15px;
+      color: var(--ink);
+      background: #0a0c14;
+      border: 1px solid var(--line-2);
+      padding: 14px 18px;
+      line-height: 1.55;
+    }
+    .term .prompt { color: var(--cyan); }
+    .term .out { color: var(--ink); }
+    .term .green { color: var(--green); }
+    .term .amber { color: var(--yellow); }
+
+    /* ───────────────── MEDIA PLACEHOLDER ─────────────────
+       Replace the inner <pre class="ascii-box"> with an <img>
+       once you have the image, e.g.:
+         <div class="media"><img src="img/01-portrait.jpg" alt=""></div>
+       ──────────────────────────────────────────────────── */
+    .media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        linear-gradient(135deg, #0e1018 0%, #14161f 100%);
+      border: 1px solid var(--line-2);
+      box-shadow:
+        inset 0 0 0 1px #000,
+        0 0 0 1px var(--line),
+        0 0 60px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+    .media::before {
+      /* corner brackets */
+      content: "";
+      position: absolute; inset: 8px;
+      background:
+        linear-gradient(to right, var(--cyan) 14px, transparent 14px) top left/14px 1px no-repeat,
+        linear-gradient(to bottom, var(--cyan) 14px, transparent 14px) top left/1px 14px no-repeat,
+        linear-gradient(to left, var(--yellow) 14px, transparent 14px) top right/14px 1px no-repeat,
+        linear-gradient(to bottom, var(--yellow) 14px, transparent 14px) top right/1px 14px no-repeat,
+        linear-gradient(to right, var(--yellow) 14px, transparent 14px) bottom left/14px 1px no-repeat,
+        linear-gradient(to top, var(--yellow) 14px, transparent 14px) bottom left/1px 14px no-repeat,
+        linear-gradient(to left, var(--cyan) 14px, transparent 14px) bottom right/14px 1px no-repeat,
+        linear-gradient(to top, var(--cyan) 14px, transparent 14px) bottom right/1px 14px no-repeat;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .media img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.1) contrast(1.05);
+    }
+    .media { padding: 22px; max-width: 460px; margin: 0 auto; }
+    .media.tall { max-width: 360px; }
+    .media.wide { max-width: 640px; }
+    .ascii-box {
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.15;
+      color: var(--cyan);
+      margin: 0;
+      text-align: center;
+      white-space: pre;
+      text-shadow: 0 0 8px rgba(95,215,255,0.22);
+    }
+    /* art color variants (mix per slide for MOTD variety) */
+    .ascii-box .art-hi      { color: var(--yellow);  text-shadow: 0 0 10px rgba(255,215,95,0.45); }
+    .ascii-box .art-dim     { color: var(--cyan-d);  text-shadow: 0 0 4px rgba(42,142,179,0.2); }
+    .ascii-box .art-red     { color: var(--red);     text-shadow: 0 0 8px rgba(255,95,95,0.4); }
+    .ascii-box .art-magenta { color: var(--magenta); text-shadow: 0 0 8px rgba(255,135,215,0.35); }
+    .ascii-box .art-orange  { color: var(--orange);  text-shadow: 0 0 8px rgba(255,149,95,0.35); }
+    .ascii-box .art-green   { color: var(--green);   text-shadow: 0 0 8px rgba(95,255,135,0.35); }
+    .ascii-box .art-blue    { color: var(--blue);    text-shadow: 0 0 8px rgba(135,181,255,0.3); }
+    .ascii-box .art-ink     { color: var(--ink);     text-shadow: none; }
+    .ascii-box .art-cyan    { color: var(--cyan);    text-shadow: 0 0 8px rgba(95,215,255,0.35); }
+    .ascii-box .art-yellow  { color: var(--yellow);  text-shadow: 0 0 8px rgba(255,215,95,0.35); }
+    .ascii-box .cap {
+      display: block;
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      letter-spacing: 0.18em;
+      text-shadow: none;
+      text-align: center;
+    }
+    .ascii-box .cap .tag { color: var(--yellow); font-weight: 700; }
+    .ascii-box .cap .file {
+      display: block;
+      color: var(--ink-soft);
+      font-size: 10px;
+      margin-top: 4px;
+      letter-spacing: 0.14em;
+      opacity: 0.7;
+    }
+    /* subtle CRT flicker */
+    @keyframes crtflicker {
+      0%, 100% { opacity: 1; }
+      48% { opacity: 1; }
+      50% { opacity: 0.96; }
+      52% { opacity: 1; }
+    }
+    .ascii-box { animation: crtflicker 5.5s infinite; }
+
+    /* tall media variant (portrait orientation) */
+    .media.tall { aspect-ratio: 3 / 4; max-width: 360px; }
+    .media.wide { aspect-ratio: 16 / 9; }
+
+    /* ───────────────── COUNTDOWN (fixed bottom overlay) ───────────────── */
+    #countdown {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 9999;
+      pointer-events: none;
+      font-family: var(--mono);
+    }
+    #countdown-bar {
+      height: 3px;
+      background: #0a0c14;
+      border-top: 1px solid #000;
+    }
+    #countdown-fill {
+      height: 100%;
+      width: 100%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px rgba(95,215,255,0.5);
+      transform-origin: left center;
+      transition: width 100ms linear, background 200ms;
+    }
+    #countdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 18px;
+      background: #0a0c14;
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    #countdown-row .num {
+      color: var(--cyan);
+      font-weight: 800;
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+    }
+    #countdown-row .num.low { color: var(--yellow); }
+    #countdown-row .num.crit { color: var(--red); animation: blink 0.5s steps(2) infinite; }
+    #countdown-fill.low { background: var(--yellow); box-shadow: 0 0 12px rgba(255,215,95,0.5); }
+    #countdown-fill.crit { background: var(--red); box-shadow: 0 0 14px rgba(255,95,95,0.6); }
+
+    @keyframes blink { 50% { opacity: 0.3; } }
+
+    /* paused state */
+    body.paused #countdown-row .pause-flag { color: var(--amber); }
+    body.paused #countdown-fill { animation: pulseBar 1s ease-in-out infinite; }
+    @keyframes pulseBar { 50% { opacity: 0.4; } }
+
+    /* ───────────────── special slide treatments ───────────────── */
+    .portrait-block {
+      width: 320px; height: 320px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #060606, #0a0a0a);
+      border: 1px solid var(--green-d);
+      box-shadow: 0 0 0 1px #000 inset, 0 0 80px rgba(65,255,102,0.12);
+      position: relative;
+    }
+    .portrait-block .glyph {
+      font-family: var(--mono);
+      font-size: 220px;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+      text-shadow: 0 0 40px rgba(65,255,102,0.4);
+    }
+    .portrait-block .corner {
+      position: absolute;
+      width: 18px; height: 18px;
+      border-color: var(--green);
+      border-style: solid;
+      border-width: 0;
+    }
+    .portrait-block .corner.tl { top: 6px;  left: 6px;  border-top-width:2px; border-left-width:2px; }
+    .portrait-block .corner.tr { top: 6px;  right: 6px; border-top-width:2px; border-right-width:2px; }
+    .portrait-block .corner.bl { bottom:6px; left: 6px; border-bottom-width:2px; border-left-width:2px; }
+    .portrait-block .corner.br { bottom:6px; right:6px; border-bottom-width:2px; border-right-width:2px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ───────── 15-second countdown (visible on every slide) ───────── -->
+  <div id="countdown">
+    <div id="countdown-bar"><div id="countdown-fill"></div></div>
+    <div id="countdown-row">
+      <span><span class="dim">SLIDE</span> <span id="cd-slide">01</span><span class="dim">/15</span></span>
+      <span><span class="dim">T-MINUS</span> <span class="num" id="cd-num">15</span><span class="dim">s</span> <span class="pause-flag dim"> </span></span>
+      <span><span class="dim">[A] PAUSE · [←→] NAV · [S] NOTES</span></span>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ════════════ SLIDE 01 — Cold Open ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 01 / 15 ]</span> <span class="dim">::</span> <span class="title">COLD OPEN</span></span>
+            <span class="dim">PECHAKUCHA // SERGEY // ET OFFSITE</span>
+          </div>
+
+          <div class="body center">
+            <div class="media wide" style="max-width:560px;">
+              <pre class="ascii-box" style="font-size:11px; line-height:1.05;">
+<span class="art-ink">                  uuuuuuu
+              uu$$$$$$$$$$$uu
+           uu$$$$$$$$$$$$$$$$$uu
+          u$$$$$$$$$$$$$$$$$$$$$u
+         u$$$$$$$$$$$$$$$$$$$$$$$u
+        u$$$$$$&quot;   &quot;$$$&quot;   &quot;$$$$$$u
+        &quot;$$$$&quot;      u$u       $$$$&quot;
+         $$$u       u$u       u$$$
+         $$$u      u$$$u      u$$$
+          &quot;$$$$uu$$$   $$$uu$$$$&quot;
+           &quot;$$$$$$$&quot;   &quot;$$$$$$$&quot;
+             u$$$$$$$u$$$$$$$u
+              u$&quot;$&quot;$&quot;$&quot;$&quot;$&quot;$u
+   uuu        $$u$ $ $ $ $u$$       uuu
+  u$$$$        $$$$$u$u$u$$$       u$$$$
+   $$$$$uu      &quot;$$$$$$$$$&quot;     uu$$$$$$
+ u$$$$$$$$$$$uu    &quot;&quot;&quot;&quot;&quot;    uuuu$$$$$$$$$$
+ $$$$&quot;&quot;&quot;$$$$$$$$$$uuu   uu$$$$$$$$$&quot;&quot;&quot;$$$&quot;
+  &quot;&quot;&quot;      &quot;&quot;$$$$$$$$$$$uu &quot;&quot;$&quot;&quot;&quot;
+            uuuu &quot;&quot;$$$$$$$$$$uuu
+   u$$$uuu$$$$$$$$$uu &quot;&quot;$$$$$$$$$$$uuu$$$
+   $$$$$$$$$$&quot;&quot;&quot;&quot;           &quot;&quot;$$$$$$$$$$$&quot;
+    &quot;$$$$$&quot;                      &quot;&quot;$$$$&quot;&quot;
+      $$$&quot;                         $$$$&quot;</span>
+<span class="cap"><span class="file">img/01-portrait.jpg · 87% loaded</span></span></pre>
+            </div>
+            <h1 style="margin-top:18px;">SERGEY<span class="green">.</span></h1>
+            <p class="dim" style="margin-top:8px; letter-spacing:0.2em; text-transform:uppercase;">
+              head of cybersecurity &nbsp;//&nbsp; booksy
+            </p>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> ORIGIN STORY</span>
+            <span>15s / SLIDE</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Soviet Ukraine, age ten. I found my older brother's Playboy in his drawer.
+          I never looked at the women — I read the article about hackers stealing free
+          pizza from Pizza Hut, and a man named Kevin Mitnick. That kid is your Head
+          of Cybersecurity now. Hi.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 02 — Cherkasy 90s ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 02 / 15 ]</span> <span class="dim">::</span> <span class="title">CHERKASY · 90s</span></span>
+            <span class="dim">// origin (cont.)</span>
+          </div>
+
+          <div class="body split">
+            <div class="media">
+              <pre class="ascii-box">
+   <span class="art-dim">╔══════════════════════╗</span>
+   <span class="art-dim">║</span> <span class="art-hi">root@cherkasy:/#</span> <span class="art-dim">▓</span> <span class="art-dim">║</span>
+   <span class="art-dim">║</span> <span class="art-hi">&gt; ./cDc.sh</span>         <span class="art-dim">║</span>
+   <span class="art-dim">║</span> ░▒▓██████████▓▒░  <span class="art-dim">║</span>
+   <span class="art-dim">║</span> ▓ <span class="art-hi">L0pht</span> · <span class="art-hi">PoC‖GTFO</span> ▓ <span class="art-dim">║</span>
+   <span class="art-dim">║</span> ░▒▓██████████▓▒░  <span class="art-dim">║</span>
+   <span class="art-dim">╚══</span>┬<span class="art-dim">══════════════</span>┬<span class="art-dim">══╝</span>
+       <span class="art-dim">│</span>              <span class="art-dim">│</span>
+   <span class="art-dim">━━━━┻━━━━━━━━━━━━━━┻━━━━</span>
+       <span class="art-hi">●</span>              <span class="art-hi">●</span>
+      ░▒▒              ▒▒░
+<span class="cap"><span class="tag">&lt; CRT.HARDWARE_SHOP &gt;</span>
+<span class="file">img/02-cherkasy.jpg · 1994</span></span></pre>
+            </div>
+            <div>
+              <h3>// after the magazine</h3>
+              <h2>Shadow<br>work.</h2>
+              <div class="chips">
+                <span class="chip">cDc</span>
+                <span class="chip">L0pht</span>
+                <span class="chip">PoC ‖ GTFO</span>
+                <span class="chip">BMX · graffiti</span>
+              </div>
+              <p class="dim" style="margin-top:18px;">
+                hardware shop on the side. building PCs. fixing modems.<br>
+                <span class="green">// mr. robot's elliot's father — post-soviet edition.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> THE UNDERGROUND DNA</span>
+            <span>02</span>
+          </div>
+        </div>
+        <aside class="notes">
+          After that magazine: 90s Cherkasy. cDc, L0pht, PoC or GTFO. BMX, graffiti,
+          streetball with the local crew. A hardware shop on the side, building PCs
+          and fixing modems. Mr. Robot's Elliot's father, post-Soviet edition.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 03 — Kyiv Telco ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 03 / 15 ]</span> <span class="dim">::</span> <span class="title">KYIV · TELCO</span></span>
+            <span class="dim">// first real network</span>
+          </div>
+
+          <div class="body split-r">
+            <div>
+              <h3>// volia · largest telco</h3>
+              <h2>First real<br>network.</h2>
+              <div class="quote">
+                The moment "a network" stopped meaning four PCs in a back room —
+                and started meaning a country with internet.
+              </div>
+            </div>
+            <div class="media">
+              <pre class="ascii-box">
+   <span class="art-dim">┌─────────────────────┐</span>
+   <span class="art-dim">│</span> <span class="art-hi">▓▓ VOLIA · KYIV ▓▓</span>  <span class="art-dim">│</span>
+   <span class="art-dim">├─────────────────────┤</span>
+   <span class="art-dim">│</span> <span class="art-hi">●</span> ████████ <span class="art-hi">▓▓▓▓▓</span>  <span class="art-dim">│</span>
+   <span class="art-dim">│</span> <span class="art-hi">●</span> ████████ <span class="art-hi">▓▓▓▓▓</span>  <span class="art-dim">│</span>
+   <span class="art-dim">│</span> <span class="art-hi">●</span> ████████ <span class="art-hi">▓▓▓▓▓</span>  <span class="art-dim">│</span>
+   <span class="art-dim">│</span> <span class="art-hi">●</span> ████████ <span class="art-hi">▓▓▓▓▓</span>  <span class="art-dim">│</span>
+   <span class="art-dim">│</span> <span class="art-hi">●</span> ████████ <span class="art-hi">▓▓▓▓▓</span>  <span class="art-dim">│</span>
+   <span class="art-dim">└─────┬───────┬───────┘</span>
+         <span class="art-dim">│</span>       <span class="art-dim">│</span>
+   <span class="art-dim">═════╧═══════╧═════════</span>
+        <span class="art-hi">↑ UA · WAN ↑</span>
+<span class="cap"><span class="tag">&lt; FIRST.REAL.NETWORK &gt;</span>
+<span class="file">img/03-volia.jpg · uptime 99.97%</span></span></pre>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> SCALE LESSON #1</span>
+            <span>03</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Then Kyiv. Volia, the country's largest telco. The moment 'a network'
+          stopped meaning four PCs in a back room and started meaning a country
+          with internet.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 04 — VAD ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 04 / 15 ]</span> <span class="dim">::</span> <span class="title">DISTRIBUTION · EE</span></span>
+            <span class="dim">// the demo was the pitch</span>
+          </div>
+
+          <div class="body split">
+            <div class="media">
+              <pre class="ascii-box">
+   <span class="art-dim">┌──────────┬──────────┐</span>
+   <span class="art-dim">│</span>  <span class="art-hi">IMPRV</span>   <span class="art-dim">│</span>  <span class="art-hi">QLYS</span>    <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  ░▒▓▒░   <span class="art-dim">│</span>  ░▒▓▒░   <span class="art-dim">│</span>
+   <span class="art-dim">│</span>   ▓▓▓    <span class="art-dim">│</span>   ▓▓▓    <span class="art-dim">│</span>
+   <span class="art-dim">├──────────┼──────────┤</span>
+   <span class="art-dim">│</span>  <span class="art-hi">SYMC</span>    <span class="art-dim">│</span>  <span class="art-hi">KASP</span>    <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  ░▒▓▒░   <span class="art-dim">│</span>  ░▒▓▒░   <span class="art-dim">│</span>
+   <span class="art-dim">│</span>   ▓▓▓    <span class="art-dim">│</span>   ▓▓▓    <span class="art-dim">│</span>
+   <span class="art-dim">└──────────┴──────────┘</span>
+       <span class="art-hi">▓▒░ VENDOR.MATRIX ░▒▓</span>
+       <span class="art-dim">eastern europe · 4 zones</span>
+<span class="cap"><span class="tag">&lt; DEMO.WAS.THE.PITCH &gt;</span>
+<span class="file">img/04-vendors.jpg · trial: 30d</span></span></pre>
+            </div>
+            <div>
+              <h3>// tech lead · eastern europe</h3>
+              <h2>The demo <span class="green">was</span><br>the pitch.</h2>
+              <div class="chips">
+                <span class="chip">imperva</span>
+                <span class="chip">symantec</span>
+                <span class="chip">qualys</span>
+                <span class="chip">kaspersky</span>
+              </div>
+              <p class="dim" style="margin-top:18px;">
+                consultancy with a demo — live, on their infra.<br>
+                <span class="green">// the product sold itself afterwards.</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> CRAFT &gt; SALES</span>
+            <span>04</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Next: technical lead across Eastern Europe for a security distributor.
+          The role wasn't selling — it was consultancy with a demo. Customers
+          called to understand whether Imperva or Qualys solved their problem.
+          I'd show them, live, on their infrastructure. The product sold itself
+          afterwards.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 05 — Bug Bounty ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 05 / 15 ]</span> <span class="dim">::</span> <span class="title">BUG BOUNTY · 2015</span></span>
+            <span class="dim">// tuition</span>
+          </div>
+
+          <div class="body split-r">
+            <div>
+              <h3>// before bug bounty was mainstream</h3>
+              <h2>Tuition,<br>not bounty.</h2>
+              <div class="term" style="margin-top:14px;">
+                <div><span class="prompt">root@bugcrowd:~$</span> ./rank --user sergey</div>
+                <div class="out">&gt; rank ........ <span class="green">TOP 500</span></div>
+                <div class="out">&gt; targets ..... tesla · westernunion</div>
+                <div class="out">&gt; payout ...... <span class="amber">$0.00</span></div>
+                <div class="out">&gt; lesson ...... <span class="green">priceless</span></div>
+              </div>
+            </div>
+            <div class="media">
+              <pre class="ascii-box">
+         <span class="art-dim">╲</span>      <span class="art-dim">│</span>      <span class="art-dim">╱</span>
+          <span class="art-dim">╲</span>     <span class="art-dim">│</span>     <span class="art-dim">╱</span>
+         <span class="art-red">▄█████████▄</span>
+        <span class="art-red">█▒▒▒▒▒▒▒▒▒▒▒█</span>
+        <span class="art-red">█</span>  <span class="art-hi">●</span>   <span class="art-magenta">▓</span>   <span class="art-hi">●</span>  <span class="art-red">█</span>
+        <span class="art-red">█▒▒▒▒▒▒▒▒▒▒▒█</span>
+         <span class="art-red">▀█████████▀</span>
+        <span class="art-dim">╱</span>▌   <span class="art-magenta">▓▓▓</span>   ▐<span class="art-dim">╲</span>
+       <span class="art-dim">╱</span> ▌   <span class="art-magenta">▓▓▓</span>   ▐ <span class="art-dim">╲</span>
+      <span class="art-dim">╱</span>  ▌   <span class="art-magenta">▓▓▓</span>   ▐  <span class="art-dim">╲</span>
+       <span class="art-dim">─────────────────</span>
+       <span class="art-hi">RANK: #500</span> <span class="art-dim">·</span> <span class="art-orange">$0.00</span>
+<span class="cap"><span class="tag">&lt; TUITION.NOT.BOUNTY &gt;</span>
+<span class="file">img/05-bugcrowd.jpg · bug.found</span></span></pre>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> THE EXPENSIVE EDUCATION I NEVER PAID FOR</span>
+            <span>05</span>
+          </div>
+        </div>
+        <aside class="notes">
+          2015, before bug bounty was mainstream. I tested Qualys' web scanner
+          against Tesla and Western Union programs to understand what the outputs
+          actually meant. Top 500 researcher on Bugcrowd. Never cashed a check.
+          It was the most expensive education I never paid for.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 06 — The Leap ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 06 / 15 ]</span> <span class="dim">::</span> <span class="title">THE LEAP · MAY 2016</span></span>
+            <span class="dim">// warsaw</span>
+          </div>
+
+          <div class="body split">
+            <div class="media">
+              <pre class="ascii-box">
+              <span class="art-red">▲</span>
+             <span class="art-hi">▄█▄</span>
+           <span class="art-hi">▄██████▄</span>
+         <span class="art-hi">▄██████████▄</span>
+       <span class="art-hi">▄██████████████▄</span>
+        <span class="art-hi">▀██████████████▀</span>
+            <span class="art-hi">▀█████▀</span>
+              <span class="art-hi">███</span>
+              <span class="art-orange">░░░</span>
+              <span class="art-orange">░░░</span>
+       <span class="art-dim">═══════════════════</span>
+        <span class="art-magenta">UA</span> <span class="art-cyan">▶▶▶▶▶▶▶▶▶▶</span> <span class="art-hi">PL</span>
+        <span class="art-dim">may 2016 · no plan b</span>
+
+      <span class="art-red">[DC4822]</span> <span class="art-dim">founded · +6mo</span>
+<span class="cap"><span class="tag">&lt; THE.LEAP &gt;</span>
+<span class="file">img/06-warsaw.jpg · one-way</span></span></pre>
+            </div>
+            <div>
+              <h2>Warsaw.<br>No plan B.</h2>
+              <ul class="list">
+                <li><span class="green">PUSH</span> &nbsp; pregnant wife, 3yo</li>
+                <li><span class="green">PULL</span> &nbsp; polish infosec firm found me on bugcrowd</li>
+                <li><span class="green">PLAN B</span> &nbsp; none</li>
+                <li><span class="green">+6mo</span> &nbsp; founded DC4822 · warsaw DEFCON chapter</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> THE CALL ANSWERED</span>
+            <span>06</span>
+          </div>
+        </div>
+        <aside class="notes">
+          May 2016. The scene I'd dreamed about since that Playboy article?
+          Not in Eastern Europe. A Polish infosec firm noticed me on Bugcrowd
+          and made the offer. Pregnant wife. Three-year-old. No plan B. We moved.
+          Six months in I founded DC4822, Warsaw's DEFCON chapter. Passed the
+          torch since.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 07 — The Trial ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 07 / 15 ]</span> <span class="dim">::</span> <span class="title">THE TRIAL</span></span>
+            <span class="dim">// instapage → affirm</span>
+          </div>
+
+          <div class="body split-r">
+            <div>
+              <h3>// paypal mafia adjacent</h3>
+              <h2>Trial at<br>altitude.</h2>
+              <ul class="list">
+                <li><span class="green">INSTAPAGE</span> &nbsp; 0 → 12 eng · 4 timezones · sold to AirSlate</li>
+                <li><span class="green">AFFIRM</span> &nbsp; first security hire in europe</li>
+              </ul>
+              <div class="quote" style="margin-top:14px;">
+                two years of midnight finishes.<br>
+                came back with a different center.
+              </div>
+            </div>
+            <div class="media">
+              <pre class="ascii-box">
+     <span class="art-hi">▲</span>                <span class="art-hi">▲</span>
+    <span class="art-hi">███</span>              <span class="art-hi">███</span>
+    <span class="art-hi">███</span><span class="art-dim">╲</span>            <span class="art-dim">╱</span><span class="art-hi">███</span>
+    <span class="art-hi">███</span> <span class="art-dim">╲</span>  <span class="art-dim">╱▓▓╲</span>  <span class="art-dim">╱</span> <span class="art-hi">███</span>
+    <span class="art-hi">███</span>  <span class="art-dim">╲╱</span> <span class="art-hi">▓▓</span> <span class="art-dim">╲╱</span>  <span class="art-hi">███</span>
+    <span class="art-hi">███</span>   <span class="art-dim">╳</span>  <span class="art-hi">▓▓</span>  <span class="art-dim">╳</span>   <span class="art-hi">███</span>
+    <span class="art-hi">███</span>  <span class="art-dim">╱╲</span> <span class="art-hi">▓▓</span> <span class="art-dim">╱╲</span>  <span class="art-hi">███</span>
+   <span class="art-dim">═══════════════════════</span>
+   <span class="art-dim">▓▒░░░░░░░░░░░░░░░░░░▒▓</span>
+   <span class="art-dim">▒░░░░░░░░░░░░░░░░░░░░▒</span>
+       <span class="art-hi">SF</span> <span class="art-dim">─────────</span> <span class="art-hi">EU</span>
+       <span class="art-dim">paypal-mafia adjacent</span>
+<span class="cap"><span class="tag">&lt; SCALE.SCHOOL &gt;</span>
+<span class="file">img/07-affirm.jpg · 02:00 commits</span></span></pre>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> THE TRIAL · SCALE SCHOOL</span>
+            <span>07</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Instapage: zero to twelve engineers, four time zones, sold to AirSlate.
+          Then Affirm — first security hire in Europe, under Max Levchin.
+          Two years of midnight finishes. I caught the PayPal-mafia worldview —
+          and came back with a different center.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 08 — Amazon OS ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 08 / 15 ]</span> <span class="dim">::</span> <span class="title">OPERATING SYSTEM</span></span>
+            <span class="dim">// amazon disease</span>
+          </div>
+
+          <div class="body split">
+            <div class="media">
+              <pre class="ascii-box">
+   <span class="art-dim">┌───────────────────────┐</span>
+   <span class="art-dim">│</span> <span class="art-hi">▓ PR/FAQ.md</span>      <span class="art-hi">v3</span> <span class="art-dim">│</span>
+   <span class="art-dim">├───────────────────────┤</span>
+   <span class="art-dim">│</span>                       <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  <span class="art-hi">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</span>      <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  ▒▒▒▒▒▒▒▒▒▒▒▒       <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒     <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ <span class="art-dim">│</span>
+   <span class="art-dim">│</span>                       <span class="art-dim">│</span>
+   <span class="art-dim">│</span> <span class="art-hi">▶</span> <span class="art-hi">/approve</span>   <span class="art-hi">/reject</span> <span class="art-dim">│</span>
+   <span class="art-dim">└───────────────────────┘</span>
+        <span class="art-hi">DOCS &gt; DECKS</span>
+<span class="cap"><span class="tag">&lt; AMAZON.DISEASE &gt;</span>
+<span class="file">img/08-prfaq.jpg · 6-pager</span></span></pre>
+            </div>
+            <div>
+              <h3>// inherited from affirm</h3>
+              <h2>Documents<br>over decks.</h2>
+              <ul class="list">
+                <li><span class="green">PR/FAQ</span> &nbsp;→&nbsp; before product</li>
+                <li><span class="green">RFC</span> &nbsp;→&nbsp; before opinion</li>
+                <li><span class="green">6-PAGER</span> &nbsp;→&nbsp; before meeting</li>
+                <li><span class="green">ONLY</span> &nbsp;→&nbsp; advance</li>
+              </ul>
+              <p class="dim" style="margin-top:14px;">
+                <span class="green">//</span> if my slack threads become google docs by tuesday — that's why.
+              </p>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> THE STACK I RUN ON</span>
+            <span>08</span>
+          </div>
+        </div>
+        <aside class="notes">
+          At Affirm I caught the Amazon disease — PR/FAQ before product, RFC
+          before opinion, doc before meeting. I brought it here. If you've
+          wondered why my Slack threads become Google Docs by Tuesday, that's why.
+          Documents over decks. Only advance.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 09 — Now ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 09 / 15 ]</span> <span class="dim">::</span> <span class="title">NOW · BOOKSY · ET · YOU</span></span>
+            <span class="dim">// landing</span>
+          </div>
+
+          <div class="body split-r">
+            <div>
+              <h3>// booksy · head of cybersec</h3>
+              <h2>Security<br>as a product.</h2>
+              <div class="quote">
+                most of my hours are not in a terminal —<br>
+                they're in a room. with you.
+              </div>
+              <p class="dim" style="margin-top:10px;">
+                <span class="green">&gt;</span> outcomes. not binders.
+              </p>
+            </div>
+            <div class="media">
+              <pre class="ascii-box">
+   <span class="art-dim">┌─────────────────────┐</span>
+   <span class="art-dim">│</span>  <span class="art-hi">BOOKSY · MAY 2026</span>  <span class="art-dim">│</span>
+   <span class="art-dim">├─────┬─────┬─────────┤</span>
+   <span class="art-dim">│</span> <span class="art-hi">MON</span> <span class="art-dim">│</span> <span class="art-hi">TUE</span> <span class="art-dim">│</span>  <span class="art-hi">WED</span>    <span class="art-dim">│</span>
+   <span class="art-dim">├─────┼─────┼─────────┤</span>
+   <span class="art-dim">│</span>  <span class="art-hi">●</span>  <span class="art-dim">│</span>  <span class="art-hi">●</span>  <span class="art-dim">│</span>  <span class="art-hi">●</span>      <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  <span class="art-hi">●</span>  <span class="art-dim">│</span>  <span class="art-hi">●</span>  <span class="art-dim">│</span>  <span class="art-hi">●</span>      <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  <span class="art-hi">●</span>  <span class="art-dim">│</span>  <span class="art-hi">●</span>  <span class="art-dim">│</span>  <span class="art-hi">●</span>      <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  <span class="art-hi">●</span>  <span class="art-dim">│</span>  <span class="art-hi">●</span>  <span class="art-dim">│</span>  <span class="art-hi">●</span>      <span class="art-dim">│</span>
+   <span class="art-dim">│</span>  ▓  <span class="art-dim">│</span>  ▓  <span class="art-dim">│</span>  ▓      <span class="art-dim">│</span>
+   <span class="art-dim">└─────┴─────┴─────────┘</span>
+       <span class="art-hi">100% BOOKED · 24/7</span>
+<span class="cap"><span class="tag">&lt; BOOKSY · PROD &gt;</span>
+<span class="file">img/09-booksy.jpg · prod</span></span></pre>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> SECURITY · AS PRODUCT</span>
+            <span>09</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Which lands us here. I run cybersecurity at Booksy. Most of my hours
+          are not in a terminal — they're in a room. With you. With engineering.
+          With finance. I run security like a product function. Outcomes, not
+          binders.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 10 — How I Lead ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 10 / 15 ]</span> <span class="dim">::</span> <span class="title">HOW I LEAD</span></span>
+            <span class="dim">// intj · architect</span>
+          </div>
+
+          <div class="body split">
+            <div class="media">
+              <pre class="ascii-box">
+        <span class="art-hi">▄█▄</span>      <span class="art-hi">▄█▄</span>
+       <span class="art-hi">█████</span>    <span class="art-hi">█████</span>
+      <span class="art-hi">█████████████████</span>
+      <span class="art-hi">█</span>  <span class="art-dim">▓▓▓</span>    <span class="art-dim">▓▓▓</span>  <span class="art-hi">█</span>
+      <span class="art-hi">█</span>  <span class="art-dim">▓▓▓</span>    <span class="art-dim">▓▓▓</span>  <span class="art-hi">█</span>
+      <span class="art-hi">█████████████████</span>
+      <span class="art-hi">█</span>  <span class="art-dim">▒▒▒</span>    <span class="art-dim">▒▒▒</span>  <span class="art-hi">█</span>
+      <span class="art-hi">█</span>  <span class="art-dim">▒▒▒</span>    <span class="art-dim">▒▒▒</span>  <span class="art-hi">█</span>
+      <span class="art-hi">█████████████████</span>
+      <span class="art-hi">█</span>     <span class="art-dim">┌───┐</span>     <span class="art-hi">█</span>
+      <span class="art-hi">█</span>     <span class="art-dim">│ ▓ │</span>     <span class="art-hi">█</span>
+      <span class="art-hi">███████████████████</span>
+       <span class="art-hi">INTJ · ARCHITECT</span>
+       <span class="art-dim">strategy + systems</span>
+<span class="cap"><span class="tag">&lt; BLUEPRINT.v1 &gt;</span>
+<span class="file">img/10-intj.jpg · low small-talk</span></span></pre>
+            </div>
+            <div>
+              <h2>Strategy.<br>Systems.<br><span class="dim">small talk → low.</span></h2>
+              <ul class="list">
+                <li>your career is yours — not mine</li>
+                <li>i advise when asked · unblock when stuck</li>
+                <li>i make myself replaceable on purpose</li>
+                <li>we ship awesome. we are weirdos. <span class="green">both = features.</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> LEADERSHIP DOCTRINE</span>
+            <span>10</span>
+          </div>
+        </div>
+        <aside class="notes">
+          How I lead. INTJ Architect — strategy and systems, low on small talk.
+          My rule on team: your career is yours, not mine. I advise when asked.
+          I unblock when you're stuck. I make myself replaceable on purpose.
+          We ship awesome work. We are weirdos. Both are features.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 11 — Why we're here ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 11 / 15 ]</span> <span class="dim">::</span> <span class="title">OFFSITE MOTTO</span></span>
+            <span class="dim">// the why we're in this room</span>
+          </div>
+
+          <div class="body center">
+            <div class="media wide" style="max-width:720px;">
+              <pre class="ascii-box" style="font-size:14px; text-align:left; padding-left:8px;">
+       <span class="art-red">=[</span> <span class="art-hi">devsecops + ai</span> <span class="art-dim">·</span> <span class="art-orange">v2026.05</span>             <span class="art-red">]=</span>
+<span class="art-red">+ -- --=[</span> <span class="art-ink">automation</span> <span class="art-dim">·</span> <span class="art-ink">leverage</span> <span class="art-dim">·</span> <span class="art-ink">ship</span>          <span class="art-red">]=</span>
+<span class="art-red">+ -- --=[</span> <span class="art-ink">claude code</span> <span class="art-dim">·</span> <span class="art-ink">obsidian</span> <span class="art-dim">·</span> <span class="art-ink">the whole rig</span>  <span class="art-red">]=</span>
+<span class="art-red">+ -- --=[</span> <span class="art-ink">outcomes — not binders</span>                  <span class="art-red">]=</span>
+
+       <span class="art-dim">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+       <span class="art-magenta">▶</span> <span class="art-hi">not</span> here to break things.
+       <span class="art-magenta">▶</span> here to use <span class="art-hi">AI</span> to empower <span class="art-cyan">mature eng</span>.
+<span class="cap"><span class="tag">&lt; MSFCONSOLE.BANNER &gt;</span>
+<span class="file">img/11-devsecops.jpg · the whole rig</span></span></pre>
+            </div>
+            <div class="display" style="margin-top:14px;">AUTOMATION!</div>
+            <div class="display sub"><span class="dim">+</span> AI</div>
+            <p class="dim" style="margin-top:16px; max-width:720px;">
+              <span class="green">//</span> we are not here to break things.<br>
+              <span class="green">//</span> we are here to use AI to empower mature engineering.
+            </p>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> CLAUDE CODE · OBSIDIAN · THE WHOLE RIG</span>
+            <span>11</span>
+          </div>
+        </div>
+        <aside class="notes">
+          This week's motto — the reason we're all in this room: we are DevSecOps.
+          We want automation. We're not here to break things. We're here to use
+          AI to empower mature engineering. Later I'll show you how I run this
+          on myself, every day. Claude Code. Obsidian. The whole rig.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 12 — Credo ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 12 / 15 ]</span> <span class="dim">::</span> <span class="title">CREDO</span></span>
+            <span class="dim">// the why behind the what</span>
+          </div>
+
+          <div class="body split-r">
+            <div>
+              <h3>// e/acc · techno-optimist</h3>
+              <h2>Build &gt;<br>critique.</h2>
+              <ul class="list">
+                <li>engineering-led security beats compliance theater</li>
+                <li>techno-optimist by orientation</li>
+                <li>abundance is a posture</li>
+                <li><span class="green">AI = leverage, not threat</span></li>
+              </ul>
+              <p class="dim" style="margin-top:14px;">
+                <span class="green">//</span> what i read now: product strategy + acceleration. not pentests.
+              </p>
+            </div>
+            <div class="media">
+              <pre class="ascii-box">
+            <span class="art-hi">▲</span>
+           <span class="art-hi">▲▲▲</span>
+          <span class="art-hi">▄███▄</span>
+         <span class="art-hi">▄█████▄</span>
+        <span class="art-hi">▄███████▄</span>
+       <span class="art-hi">▄█████████▄</span>
+      <span class="art-hi">▄███████████▄</span>
+        <span class="art-dim">║║║║║║║║║</span>
+        <span class="art-dim">║║║║║║║║║</span>
+        <span class="art-dim">║║║║║║║║║</span>
+        <span class="art-dim">║║║║║║║║║</span>
+       <span class="art-hi">e/acc</span> <span class="art-hi">▲▲▲▲▲</span>
+   <span class="art-dim">─────────────────────</span>
+   <span class="art-hi">build &gt; critique</span>
+<span class="cap"><span class="tag">&lt; TECHNO.OPTIMIST &gt;</span>
+<span class="file">img/12-credo.jpg · abundance.posture</span></span></pre>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> PHILOSOPHY · NOT POSTURE</span>
+            <span>12</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Bigger picture, the why behind the what: engineering-led security
+          beats compliance theater, every time. Techno-optimist by orientation.
+          Building beats critiquing. Abundance is a posture. AI is leverage,
+          not threat. What I read now is product strategy and acceleration —
+          not pentests.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 13 — Home ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 13 / 15 ]</span> <span class="dim">::</span> <span class="title">HOME</span></span>
+            <span class="dim">// off-screen</span>
+          </div>
+
+          <div class="body split">
+            <div class="media">
+              <pre class="ascii-box">
+             <span class="art-red">▄▄▄</span>
+           <span class="art-red">▄█████▄</span>
+         <span class="art-orange">▄█████████▄</span>
+       <span class="art-orange">▄█████████████▄</span>
+      <span class="art-hi">███████████████████</span>
+      <span class="art-hi">██</span> <span class="art-dim">┌──┐</span>     <span class="art-dim">┌──┐</span> <span class="art-hi">██</span>
+      <span class="art-hi">██</span> <span class="art-dim">│</span><span class="art-cyan">▓▓</span><span class="art-dim">│</span>     <span class="art-dim">│</span><span class="art-cyan">▓▓</span><span class="art-dim">│</span> <span class="art-hi">██</span>
+      <span class="art-hi">██</span> <span class="art-dim">└──┘</span>     <span class="art-dim">└──┘</span> <span class="art-hi">██</span>
+      <span class="art-hi">██</span>      <span class="art-dim">┌────┐</span>     <span class="art-hi">██</span>
+      <span class="art-hi">██</span>      <span class="art-dim">│</span> <span class="art-magenta">●●</span> <span class="art-dim">│</span>     <span class="art-hi">██</span>
+      <span class="art-hi">██</span>      <span class="art-dim">└────┘</span>     <span class="art-hi">██</span>
+      <span class="art-hi">█████████████████████</span>
+       <span class="art-orange">WARSAW · 10 YEARS</span>
+   <span class="art-dim">3 languages · 0 wins</span>
+<span class="cap"><span class="tag">&lt; HOME.STATE = TRUE &gt;</span>
+<span class="file">img/13-family.jpg · the anchor</span></span></pre>
+            </div>
+            <div>
+              <h2>Warsaw.<br>Ten years.</h2>
+              <p class="dim" style="margin-top:14px;">
+                citizenship close. wife. daughter, 12. son, 9.
+              </p>
+              <div class="quote">
+                they speak better polish than i do —<br>
+                i lose every argument in three languages.
+              </div>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> THE ANCHOR</span>
+            <span>13</span>
+          </div>
+        </div>
+        <aside class="notes">
+          Off-screen: Warsaw, ten years, citizenship close. Wife, daughter twelve,
+          son nine. They speak better Polish than I do and remind me daily.
+          The kids have lived in three languages since birth — which means
+          I lose every argument in all of them.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 14 — The Ask ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 14 / 15 ]</span> <span class="dim">::</span> <span class="title">THE ASK</span></span>
+            <span class="dim">// two days</span>
+          </div>
+
+          <div class="body split-r">
+            <div>
+              <h3>// what i want from this offsite</h3>
+              <h2>Steal one<br>good idea.</h2>
+              <ul class="list">
+                <li>a real conversation with finance eng or IT ops</li>
+                <li>one good idea from a function that isn't mine</li>
+                <li>remember why i like the back-office crowd</li>
+              </ul>
+            </div>
+            <div class="media">
+              <pre class="ascii-box">
+     <span class="art-dim">┌─┐</span>             <span class="art-dim">┌─┐</span>
+     <span class="art-dim">│</span><span class="art-hi">▓</span><span class="art-dim">│</span>             <span class="art-dim">│</span><span class="art-hi">▓</span><span class="art-dim">│</span>
+     <span class="art-dim">├─┤</span>             <span class="art-dim">├─┤</span>
+     <span class="art-dim">│ │</span>             <span class="art-dim">│ │</span>
+   <span class="art-hi">═╤═╤═════════════╤═╤═</span>
+   <span class="art-hi">═╧═╧═</span> <span class="art-hi">☕</span>   <span class="art-dim">▒░▒</span>  <span class="art-hi">═╧═╧═</span>
+     <span class="art-dim">│ │</span>             <span class="art-dim">│ │</span>
+     <span class="art-dim">├─┤</span>             <span class="art-dim">├─┤</span>
+     <span class="art-dim">│</span><span class="art-hi">▓</span><span class="art-dim">│</span>             <span class="art-dim">│</span><span class="art-hi">▓</span><span class="art-dim">│</span>
+     <span class="art-dim">└─┘</span>             <span class="art-dim">└─┘</span>
+
+   <span class="art-hi">[ open seat ]</span> <span class="art-dim">·</span> <span class="art-hi">[ you ]</span>
+       <span class="art-dim">finance eng / IT ops?</span>
+<span class="cap"><span class="tag">&lt; INVITATION.OPEN &gt;</span>
+<span class="file">img/14-table.jpg · pull up a chair</span></span></pre>
+            </div>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> INVITATION OPEN</span>
+            <span>14</span>
+          </div>
+        </div>
+        <aside class="notes">
+          What I want from this offsite: a real conversation with someone in
+          Finance Eng or IT Ops whose name I only know from incident channels.
+          Steal one good idea from a function that isn't mine. Remember why
+          I like the back-office crowd more than any flashy product team.
+        </aside>
+      </section>
+
+      <!-- ════════════ SLIDE 15 — Close ════════════ -->
+      <section data-background-color="#000">
+        <div class="frame">
+          <div class="hud">
+            <span><span class="id">[ 15 / 15 ]</span> <span class="dim">::</span> <span class="title">CLOSE</span></span>
+            <span class="dim">// thank you</span>
+          </div>
+
+          <div class="body center">
+            <div class="media tall">
+              <pre class="ascii-box">
+              <span class="art-red">▲</span>
+             <span class="art-hi">▄█▄</span>
+            <span class="art-hi">▄███▄</span>
+           <span class="art-hi">▄█████▄</span>
+          <span class="art-hi">▄███████▄</span>
+         <span class="art-hi">▄█████████▄</span>
+        <span class="art-hi">█▓▓▓▓▓▓▓▓▓▓▓█</span>
+        <span class="art-hi">█▓ ▓</span><span class="art-dim">███</span><span class="art-hi">▓ ▓█</span>
+        <span class="art-hi">█▓ ▓</span><span class="art-dim">███</span><span class="art-hi">▓ ▓█</span>
+        <span class="art-hi">█▓▓▓▓▓▓▓▓▓▓▓█</span>
+        <span class="art-hi">▀▀█▓▓▓▓▓▓▓█▀▀</span>
+           <span class="art-orange">▄█████▄</span>
+          <span class="art-orange">▒▒█▓▓▓█▒▒</span>
+         <span class="art-orange">░▒░░░▓░░░▒░</span>
+        <span class="art-orange">░▒░░░░▓░░░░▒░</span>
+       <span class="art-orange">░▒░░░░░▓░░░░░▒░</span>
+      <span class="art-orange">░▒░░░░░░▓░░░░░░▒░</span>
+
+       <span class="art-hi">↗ ONLY ADVANCE ↗</span>
+<span class="cap"><span class="tag">&lt; LAUNCH.SEQUENCE &gt;</span>
+<span class="file">img/15-launch.jpg · EOF</span></span></pre>
+            </div>
+            <h2 style="margin-top:18px; text-align:center;">
+              ↗ only<br><span class="green">advance.</span>
+            </h2>
+            <p class="dim" style="margin-top:16px; letter-spacing:0.18em;">
+              PIZZA HUT · BUGCROWD · DC4822 · AMAZON OS · PAYPAL MAFIA · WEIRDOS
+            </p>
+            <p style="margin-top:14px; color:var(--green);">
+              <span class="dim">//</span> coffee or a good incident story &nbsp;·&nbsp; @sergey · #security
+            </p>
+          </div>
+
+          <div class="foot">
+            <span><span class="green">▓▒░</span> EOF</span>
+            <span>15 / 15</span>
+          </div>
+        </div>
+        <aside class="notes">
+          That's the file. Ten years in Warsaw. Onwards and upwards — only advance.
+          If any beat landed — the Pizza Hut hack, Bugcrowd, DC4822, the Amazon
+          disease, the PayPal-mafia school, the weirdos clause — come find me.
+          I'm cheap. Coffee or a good incident story. Thank you.
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script>
+    const SLIDE_SECONDS = 15;
+
+    Reveal.initialize({
+      hash: true,
+      controls: true,
+      progress: false,
+      slideNumber: false,
+      center: false,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      autoSlide: SLIDE_SECONDS * 1000,
+      autoSlideStoppable: true,
+      loop: false,
+      width: 1280,
+      height: 800,
+      margin: 0.02,
+      minScale: 0.3,
+      maxScale: 2.0,
+      plugins: [ RevealNotes ]
+    });
+
+    // ───── 15-second countdown synced to autoSlide ─────
+    const cdNum   = document.getElementById('cd-num');
+    const cdSlide = document.getElementById('cd-slide');
+    const cdFill  = document.getElementById('countdown-fill');
+    const pauseFlag = document.querySelector('#countdown-row .pause-flag');
+
+    let remaining = SLIDE_SECONDS;
+    let lastTick = null;
+    let paused = false;
+    let rafId = null;
+
+    function setSlideNum() {
+      const i = Reveal.getIndices();
+      const n = (i.h || 0) + 1;
+      cdSlide.textContent = String(n).padStart(2, '0');
+    }
+
+    function tick(now) {
+      if (lastTick == null) lastTick = now;
+      const dt = (now - lastTick) / 1000;
+      lastTick = now;
+      if (!paused) remaining = Math.max(0, remaining - dt);
+
+      const whole = Math.ceil(remaining);
+      cdNum.textContent = String(whole).padStart(2, '0');
+      cdFill.style.width = (remaining / SLIDE_SECONDS * 100) + '%';
+
+      cdNum.classList.toggle('crit', whole <= 3 && !paused);
+      cdNum.classList.toggle('low',  whole > 3 && whole <= 6 && !paused);
+      cdFill.classList.toggle('crit', whole <= 3 && !paused);
+      cdFill.classList.toggle('low',  whole > 3 && whole <= 6 && !paused);
+
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function resetCountdown() {
+      remaining = SLIDE_SECONDS;
+      lastTick = null;
+      setSlideNum();
+    }
+
+    Reveal.on('ready', () => {
+      resetCountdown();
+      rafId = requestAnimationFrame(tick);
+    });
+    Reveal.on('slidechanged', resetCountdown);
+    Reveal.on('autoslidepaused', () => {
+      paused = true;
+      document.body.classList.add('paused');
+      pauseFlag.textContent = '· PAUSED';
+    });
+    Reveal.on('autoslideresumed', () => {
+      paused = false;
+      document.body.classList.remove('paused');
+      pauseFlag.textContent = ' ';
+    });
+  </script>
+</body>
+</html>

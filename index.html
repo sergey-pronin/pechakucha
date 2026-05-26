@@ -396,6 +396,45 @@
     body.paused #countdown-fill { animation: pulseBar 1s ease-in-out infinite; }
     @keyframes pulseBar { 50% { opacity: 0.4; } }
 
+    /* ── notes button + inline panel (mobile-friendly) ── */
+    #countdown-row .notes-btn {
+      cursor: pointer;
+      pointer-events: auto;
+      color: var(--ink-soft);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    #countdown-row .notes-btn:hover,
+    #countdown-row .notes-btn.active { color: var(--cyan); }
+
+    #notes-panel {
+      position: fixed;
+      left: 0; right: 0; bottom: 32px;
+      z-index: 9998;
+      background: #0a0c14;
+      border-top: 1px solid var(--cyan-d);
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 18px 24px 22px;
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink);
+      transform: translateY(110%);
+      transition: transform 220ms ease;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+    }
+    #notes-panel.open { transform: translateY(0); }
+    #notes-panel::before {
+      content: "// SPEAKER NOTES";
+      display: block;
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
     /* ───────────────── special slide treatments ───────────────── */
     .portrait-block {
       width: 320px; height: 320px;
@@ -435,9 +474,14 @@
     <div id="countdown-row">
       <span><span class="dim">SLIDE</span> <span id="cd-slide">01</span><span class="dim">/15</span></span>
       <span><span class="dim">T-MINUS</span> <span class="num" id="cd-num">15</span><span class="dim">s</span> <span class="pause-flag dim"> </span></span>
-      <span><span class="dim">[A] PAUSE · [←→] NAV · [S] NOTES</span></span>
+      <span>
+        <span class="dim">[A] PAUSE · [←→] NAV ·</span>
+        <span class="notes-btn" id="notes-toggle">[S/TAP] NOTES</span>
+      </span>
     </div>
   </div>
+
+  <div id="notes-panel"></div>
 
   <div class="reveal">
     <div class="slides">
@@ -773,11 +817,10 @@
               <h3>// paypal mafia adjacent</h3>
               <h2>Trial at<br>altitude.</h2>
               <ul class="list">
-                <li><span class="green">INSTAPAGE</span> &nbsp; 0 → 12 eng · 4 timezones · sold to AirSlate</li>
-                <li><span class="green">AFFIRM</span> &nbsp; first security hire in europe</li>
+                <li><span class="green">INSTAPAGE</span> &nbsp; scaled security at hypergrowth · 4 timezones · 8-digit exit</li>
+                <li><span class="green">AFFIRM</span> &nbsp; first security hire in europe · 2 yrs · midnight finishes</li>
               </ul>
               <div class="quote" style="margin-top:14px;">
-                two years of midnight finishes.<br>
                 came back with a different center.
               </div>
             </div>
@@ -806,10 +849,10 @@
           </div>
         </div>
         <aside class="notes">
-          Instapage: zero to twelve engineers, four time zones, sold to AirSlate.
-          Then Affirm — first security hire in Europe, under Max Levchin.
-          Two years of midnight finishes. I caught the PayPal-mafia worldview —
-          and came back with a different center.
+          Instapage: scaled security at hypergrowth, four time zones, high
+          eight-digit exit. Then Affirm — first security hire in Europe under
+          Max Levchin. Two years of midnight finishes there. I caught the
+          PayPal-mafia worldview and came back with a different center.
         </aside>
       </section>
 
@@ -1316,6 +1359,42 @@
       paused = false;
       document.body.classList.remove('paused');
       pauseFlag.textContent = ' ';
+    });
+
+    // ───── inline notes panel (mobile-friendly tap target) ─────
+    const notesPanel = document.getElementById('notes-panel');
+    const notesBtn = document.getElementById('notes-toggle');
+
+    function refreshNotes() {
+      const slide = Reveal.getCurrentSlide();
+      const note = slide ? slide.querySelector('aside.notes') : null;
+      notesPanel.textContent = note ? note.textContent.trim() : '(no notes)';
+    }
+
+    function toggleNotes(force) {
+      const willOpen = force !== undefined ? force : !notesPanel.classList.contains('open');
+      if (willOpen) refreshNotes();
+      notesPanel.classList.toggle('open', willOpen);
+      notesBtn.classList.toggle('active', willOpen);
+    }
+
+    notesBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleNotes();
+    });
+
+    Reveal.on('slidechanged', () => {
+      if (notesPanel.classList.contains('open')) refreshNotes();
+    });
+
+    // dismiss on Escape or when tapping outside the panel
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && notesPanel.classList.contains('open')) toggleNotes(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (!notesPanel.classList.contains('open')) return;
+      if (notesPanel.contains(e.target) || notesBtn.contains(e.target)) return;
+      toggleNotes(false);
     });
   </script>
 </body>
